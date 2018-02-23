@@ -43,6 +43,8 @@ namespace default_app
 
             app.UseStaticFiles();
 
+            //app.UseMvc();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

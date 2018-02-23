@@ -2,34 +2,49 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './components/app/app.component';
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { HomeComponent } from './components/home/home.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
+import { LoginComponent } from './components/login/login.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthenticationService } from './services/authentication.service';
+import { AuthguardGuard } from './guards/authguard.guard';
+
+const appRoutes: Routes = [
+
+    {
+        path: '',
+        component: LoginComponent
+    },   
+    {
+        path: 'dashboard',
+        canActivate: [AuthguardGuard],
+        component: DashboardComponent
+    }
+]
 
 @NgModule({
     declarations: [
         AppComponent,
-        NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
-        HomeComponent
+        LoginComponent,
+        HeaderComponent,
+        FooterComponent,
+        DashboardComponent
     ],
     imports: [
         CommonModule,
         HttpModule,
         FormsModule,
-        RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'home', component: HomeComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
-            { path: '**', redirectTo: 'home' }
-        ])
-    ]
+        RouterModule.forRoot(appRoutes),
+        BrowserModule
+    ],
+    providers: [
+        AuthenticationService,
+        AuthguardGuard
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModuleShared {
 }
